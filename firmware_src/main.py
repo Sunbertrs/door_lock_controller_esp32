@@ -19,4 +19,5 @@ def lock_door(servo: Servo360):
     servo.no_cw()
 
 if __name__ == '__main__':
-    bth = BluetoothInstance("609")
+    # bth = BluetoothInstance("609")
+    servo = Servo360(Pin(10, Pin.OUT))
