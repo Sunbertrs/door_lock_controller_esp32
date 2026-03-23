@@ -12,14 +12,12 @@ def stand_by():
     #     for i in range(1023, 0, -1):
     #         PWM_CONTROLLER.duty(i)
     #         time.sleep(0.001)
-    while True:
-        LED_PIN.off()
-        time.sleep(2)
-        LED_PIN.on()
-        time.sleep(2)
+    PWM_CONTROLLER.freq(1)
+    PWM_CONTROLLER.duty(512)
 
 def active():
-    pass
+    PWM_CONTROLLER.deinit()
+    LED_PIN.on()
 
 def in_use():
     pass
