@@ -1,4 +1,4 @@
-from machine import Pin
+from machine import Pin, Timer
 import time
 
 from bluetooth_daemon import BluetoothInstance
@@ -21,3 +21,8 @@ def lock_door(servo: Servo360):
 if __name__ == '__main__':
     # bth = BluetoothInstance("609")
     servo = Servo360(Pin(10, Pin.OUT))
+    led_device = Timer(0)
+    led_device.init(mode=Timer.PERIODIC, period=1000, callback=lambda _: led_indicator.stand_by())
+    # bth_device = Timer(1)
+    # bth_device.init(mode=Timer.PERIODIC, period=1000, callback=)
+    
