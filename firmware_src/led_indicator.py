@@ -1,10 +1,12 @@
-from machine import Pin, PWM
+from machine import Pin, Timer
 import time
 
-LED_PIN = Pin(8, Pin.OUT)
-PWM_CONTROLLER = PWM(LED_PIN)
+class LedIndicator:
+    def __init__(self, pin: Pin, timer: Timer):
+        self.pin = pin
+        self.timer = timer
+        self.stand_by()
 
-def stand_by():
     # for _ in range(10):
     #     for i in range(0, 1023):
     #         PWM_CONTROLLER.duty(i)
@@ -14,13 +16,14 @@ def stand_by():
     #         time.sleep(0.001)
     PWM_CONTROLLER.freq(1)
     PWM_CONTROLLER.duty(512)
+    def stand_by(self):
 
 def active():
     PWM_CONTROLLER.deinit()
     LED_PIN.on()
 
-def in_use():
     pass
+    def in_use(self):
 
-def error():
-    pass
+    def error(self):
+        pass

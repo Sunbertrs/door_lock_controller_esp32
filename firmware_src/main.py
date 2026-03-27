@@ -2,6 +2,7 @@ from machine import Pin, Timer
 import time
 
 from bluetooth_daemon import BluetoothInstance
+from led_indicator import LedIndicator
 from servo import Servo360
 
 def unlock_door(servo: Servo360):
@@ -19,10 +20,8 @@ def lock_door(servo: Servo360):
     servo.no_cw()
 
 if __name__ == '__main__':
-    # bth = BluetoothInstance("609")
-    servo = Servo360(Pin(10, Pin.OUT))
-    led_device = Timer(0)
-    led_device.init(mode=Timer.PERIODIC, period=1000, callback=lambda _: led_indicator.stand_by())
     # bth_device = Timer(1)
+    # servo = Servo360(Pin(10, Pin.OUT))
+    led_device = LedIndicator(Pin(8, Pin.OUT), Timer(0))
     # bth_device.init(mode=Timer.PERIODIC, period=1000, callback=)
     
