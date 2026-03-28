@@ -51,11 +51,11 @@ class BluetoothInstance:
         self.name = device_name
         self.indicator: LedIndicator = led_indicator
         self.bluetooth_device.irq(self.status_irq)
-        self.ad_data = self.ad_info_to_binary(AD_DATA_TYPES["Flags"], 0x06) + \
-                       self.ad_info_to_binary(AD_DATA_TYPES["CompleteName"], self.name)
+        self.ad_data = self._ad_info_to_binary(AD_DATA_TYPES["Flags"], 0x06) + \
+                       self._ad_info_to_binary(AD_DATA_TYPES["CompleteName"], self.name)
         self.advertise()
 
-    def ad_info_to_binary(self, data_types, value):
+    def _ad_info_to_binary(self, data_types, value):
         if type(value) == str:
             value_encoded = b''.join(char.encode() for char in value)
         else:
