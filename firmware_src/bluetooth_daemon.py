@@ -49,9 +49,20 @@ class BluetoothInstance:
         if self.bluetooth_device.active():
             self.bluetooth_device.active(False)
         self.bluetooth_device.active(True)
+        self.bluetooth_device.irq(self.status_irq)
         self.name = device_name
         self.indicator: LedIndicator = led_indicator
-        self.bluetooth_device.irq(self.status_irq)
+        self.servo_device = servo
+
+        self.services = (
+            self._gatt_service(0x9011,
+                               (
+                                   self._gatt_char(0x9012, read=True, write=True, notify=True)
+                               )
+            ),
+        )
+        ((self.serv,),) = self.bluetooth_device.gatts_register_services(self.services)
+
         self.ad_data = self._ad_info_to_binary(AD_DATA_TYPES["Flags"], 0x06) + \
                        self._ad_info_to_binary(AD_DATA_TYPES["CompleteName"], self.name)
         self.advertise()
@@ -63,6 +74,23 @@ class BluetoothInstance:
             value_encoded = bytes([value])
         length = len(value_encoded) + 1
         return bytes([length, data_types]) + value_encoded
+
+    def _gatt_service(self, uuid: int|str, *char):
+        return bluetooth.UUID(uuid), char
+
+    def _gatt_char(self, uuid: int|str, read=False, write=False, notify=False, indicate=False, write_no_response=False):
+        char_prop = 0
+        if read:
+            char_prop |= bluetooth.FLAG_READ
+        if write:
+            char_prop |= bluetooth.FLAG_WRITE
+        if notify:
+            char_prop |= bluetooth.FLAG_NOTIFY
+        if indicate:
+            char_prop |= bluetooth.FLAG_INDICATE
+        if write_no_response:
+            char_prop |= bluetooth.FLAG_WRITE_NO_RESPONSE
+        return bluetooth.UUID(uuid), char_prop
 
     def advertise(self):
         self.bluetooth_device.gap_advertise(600, self.ad_data)
