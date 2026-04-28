@@ -101,3 +101,10 @@ class BluetoothInstance:
         elif event == BT_IRQ_CODE["CENTRAL_DISCONNECT"]:
             self.indicator.stand_by()
             self.advertise()
+        elif event == BT_IRQ_CODE["GATTS_WRITE"]:
+            receives = self.bluetooth_device.gatts_read(self.serv)
+            print(receives)
+            if receives == b"lock":
+                behaviour.lock_door(self.servo_device)
+            elif receives == b"unlock":
+                behaviour.unlock_door(self.servo_device)
