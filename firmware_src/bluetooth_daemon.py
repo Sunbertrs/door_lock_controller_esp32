@@ -1,5 +1,6 @@
 import bluetooth
 
+import behaviour
 from led_indicator import LedIndicator
 
 AD_DATA_TYPES = {
@@ -43,7 +44,7 @@ BT_IRQ_CODE = {
 }
 
 class BluetoothInstance:
-    def __init__(self, device_name, led_indicator):
+    def __init__(self, device_name, led_indicator, servo):
         self.bluetooth_device = bluetooth.BLE()
         if self.bluetooth_device.active():
             self.bluetooth_device.active(False)
